@@ -1,14 +1,13 @@
 #ifndef _UTILS_H_
 #define _UTILS_H_
 
-#include <stdbool.h>
-#include <stdlib.h>
-#include <stdint.h>
+#include <SDL2/SDL.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 /* NOX_DisplayMessage
  *
- * Display formatted message on output stream 
+ * Display formatted message on output stream
  * Standard -> [ Ouput = stdout | Errors = stderr ]
  */
 
@@ -25,6 +24,6 @@
 extern bool NOX_fatal_error;
 extern FILE **NOX_current_stream;
 
-void NOX_DisplayMessage(uint8_t flags, const char *message, ...);
+void NOX_DisplayMessage(Uint8 flags, const char *message, ...);
 
 #endif /* _UTILS_H_ */

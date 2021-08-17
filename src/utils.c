@@ -22,7 +22,7 @@ FILE **NOX_current_stream = &stdout;
 /* SDL2 prefixes */
 #define NOX_PREFIX_SDL2_ERROR "\033[4;31m[ SDL2 ERROR ]\033[0m"
 
-void NOX_DisplayMessage(uint8_t flags, const char *message, ...)
+void NOX_DisplayMessage(Uint8 flags, const char *message, ...)
 {
 	va_list arg_list;
 	char current_message[NOX_MAX_STRING_BYTES] = {0};
