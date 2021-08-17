@@ -10,7 +10,7 @@ Uint8 NOX_InitSDL2(SDL_Window **window, SDL_Renderer **renderer, SDL_Rect window
 	}
 	NOX_DisplayMessage(NOX_LOG_INFO, "SDL2 Library Initialized");
 
-	flags = SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI;
+	flags = SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_RESIZABLE;
 	*window = SDL_CreateWindow(
 		title != NULL ? title : "No Title",
 		window_rect.x, window_rect.y,

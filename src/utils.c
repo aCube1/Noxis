@@ -6,7 +6,10 @@
 //#include "stb_image.h"
 
 bool NOX_fatal_error = false;
+bool NOX_is_running = false;
+int NOX_fps = 0;
 FILE **NOX_current_stream = &stdout;
+SDL_Rect NOX_window_rect = {0, 0, 800, 600};
 
 /* NOTE: Log defines */
 #define NOX_MAX_STRING_BYTES 512
@@ -54,4 +57,29 @@ void NOX_DisplayMessage(Uint8 flags, const char *message, ...)
 	}
 
 	va_end(arg_list);
+}
+
+void NOX_QuitHandler(void)
+{
+	NOX_is_running = false;
+}
+
+void NOX_WindowHandler(SDL_WindowEvent window)
+{
+	static Uint32 last_timestamp = 0;
+	(void)last_timestamp; /* Fix Unused Params Warn */
+
+	switch (window.event) {
+		case SDL_WINDOWEVENT_RESIZED: /* FALLTHROUGHT */
+		case SDL_WINDOWEVENT_SIZE_CHANGED:	
+			NOX_window_rect.w = window.data1;
+			NOX_window_rect.h = window.data2;
+
+			NOX_DisplayMessage(NOX_LOG_DEBUG, "Window Resized: %i x %i", NOX_window_rect.w, NOX_window_rect.h);
+			break;
+		default:
+			break;
+	}
+
+	last_timestamp = window.timestamp;
 }

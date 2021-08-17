@@ -16,8 +16,9 @@ find_package(SDL2 REQUIRED)
 set(INCLUDE_DIRS ${SDL2_INCLUDE_DIRS} ${PROJECT_SOURCE_DIR}/include)
 set(LINK_LIBS ${SDL2_LIBRARIES})
 
-file(GLOB SOURCES 
+file(GLOB SOURCES
 	"src/*.c"
+	"src/core/*.c"
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

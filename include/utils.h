@@ -21,9 +21,18 @@
 /* SDL2 Log Messages */
 #define NOX_LOG_SDL2_ERROR 0x20u
 
+/* Global Variables */
 extern bool NOX_fatal_error;
+extern bool NOX_is_running;
+extern int NOX_fps;
+
 extern FILE **NOX_current_stream;
+extern SDL_Rect NOX_window_rect; /* Window Position And Size */
 
 void NOX_DisplayMessage(Uint8 flags, const char *message, ...);
+
+/* Event Handlers */
+void NOX_QuitHandler(void);
+void NOX_WindowHandler(const SDL_WindowEvent window);
 
 #endif /* _UTILS_H_ */
