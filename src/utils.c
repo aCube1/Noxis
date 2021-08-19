@@ -5,11 +5,10 @@
 #include <SDL2/SDL.h>
 //#include "stb_image.h"
 
-bool NOX_fatal_error = false;
-bool NOX_is_running = false;
-int NOX_fps = 0;
-FILE **NOX_current_stream = &stdout;
-SDL_Rect NOX_window_rect = {0, 0, 800, 600};
+static bool NOX_fatal_error = false;
+static bool NOX_is_running = true;
+static Uint32 NOX_fps = 0;
+static SDL_Rect NOX_window_rect = {0, 0, 800, 600};
 
 /* NOTE: Log defines */
 #define NOX_MAX_STRING_BYTES 512
@@ -59,6 +58,29 @@ void NOX_DisplayMessage(Uint8 flags, const char *message, ...)
 	va_end(arg_list);
 }
 
+bool NOX_IsRunning(void) { return NOX_is_running; }
+bool NOX_HasFatalError(void) { return NOX_fatal_error; }
+SDL_Rect NOX_GetWindowRect(void) { return NOX_window_rect; }
+Uint32 NOX_GetFPS(void) { return NOX_fps; }
+
+void NOX_UpdateFPS(void)
+{
+	static Uint32 last_time = 0;
+	static Uint32 fps_accumulator = 0;
+	static double fps_timer = 0;
+
+	fps_accumulator++;
+	fps_timer += (SDL_GetTicks() - last_time) / 1000.0f;
+	if (fps_timer >= 1.0f) {
+		NOX_fps = fps_accumulator;
+		fps_accumulator = 0;
+		fps_timer = 0;
+	}
+
+	last_time = SDL_GetTicks();
+}
+
+
 void NOX_QuitHandler(void)
 {
 	NOX_is_running = false;
@@ -71,7 +93,7 @@ void NOX_WindowHandler(SDL_WindowEvent window)
 
 	switch (window.event) {
 		case SDL_WINDOWEVENT_RESIZED: /* FALLTHROUGHT */
-		case SDL_WINDOWEVENT_SIZE_CHANGED:	
+		case SDL_WINDOWEVENT_SIZE_CHANGED:
 			NOX_window_rect.w = window.data1;
 			NOX_window_rect.h = window.data2;
 
