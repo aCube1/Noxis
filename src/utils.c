@@ -7,6 +7,7 @@
 
 static bool NOX_fatal_error = false;
 static bool NOX_is_running = true;
+static double NOX_dt = 0;
 static Uint32 NOX_fps = 0;
 static SDL_Rect NOX_window_rect = {0, 0, 800, 600};
 
@@ -61,6 +62,7 @@ void NOX_DisplayMessage(Uint8 flags, const char *message, ...)
 bool NOX_IsRunning(void) { return NOX_is_running; }
 bool NOX_HasFatalError(void) { return NOX_fatal_error; }
 SDL_Rect NOX_GetWindowRect(void) { return NOX_window_rect; }
+double NOX_GetDeltaTime(void) { return NOX_dt; }
 Uint32 NOX_GetFPS(void) { return NOX_fps; }
 
 void NOX_UpdateFPS(void)
@@ -80,6 +82,14 @@ void NOX_UpdateFPS(void)
 	last_time = SDL_GetTicks();
 }
 
+void NOX_UpdateDeltaTime(void)
+{
+	static Uint32 last_time = 0;
+
+	NOX_dt = (SDL_GetTicks() - last_time) / 1000.f;
+
+	last_time = SDL_GetTicks();
+}
 
 void NOX_QuitHandler(void)
 {

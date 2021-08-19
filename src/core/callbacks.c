@@ -16,9 +16,7 @@ void NOX_EventHandler(SDL_Event *event)
 	}
 }
 
-void NOX_Update(double dt) {
-	(void) dt; /* Fix Unused Param Warning */
-
+void NOX_Update(void) {
 	NOX_UpdateFPS();
 }
 

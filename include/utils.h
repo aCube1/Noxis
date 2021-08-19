@@ -27,9 +27,11 @@ void NOX_DisplayMessage(Uint8 flags, const char *message, ...);
 bool NOX_HasFatalError(void);
 bool NOX_IsRunning(void);
 SDL_Rect NOX_GetWindowRect(void);
+double NOX_GetDeltaTime(void);
 Uint32 NOX_GetFPS(void);
 
 void NOX_UpdateFPS(void);
+void NOX_UpdateDeltaTime(void);
 
 /* Event Handlers */
 void NOX_QuitHandler(void);
