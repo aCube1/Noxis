@@ -1,32 +1,47 @@
 cmake_minimum_required(VERSION 3.16)
-project(Noxis)
+project(Noxis C)
 
-set(CMAKE_C_FLAGS "-Wall -Wpedantic -Wextra -Werror")
-set(CMAKE_C_STANDARD 11)
-
-set(CMAKE_BINARY_DIR ${PROJECT_SOURCE_DIR})
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-
-#set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
+include(cmake/base.cmake)
+include(cmake/warnings.cmake)
 
 find_package(SDL2 REQUIRED)
 
-set(LINK_LIBS ${SDL2_LIBRARIES})
+add_executable(${PROJECT_NAME})
 
-set(INCLUDE_DIRS ${SDL2_INCLUDE_DIRS} include)
-set(SOURCES
-	"src/utils.c"
-	"src/main.c"
+target_sources(
+    ${PROJECT_NAME}
+    PRIVATE
+        include/utils.h
+        src/utils.c
 
-	"src/core/callbacks.c"
-	"src/core/game.c"
-	"src/core/init.c"
-	"src/core/quit.c"
+        include/core/callbacks.h
+        include/core/game.h
+        include/core/init.h
+        include/core/quit.h
+        src/core/callbacks.c
+        src/core/game.c
+        src/core/init.c
+        src/core/quit.c
+
+        src/main.c
 )
 
-add_executable(${PROJECT_NAME} ${SOURCES})
+target_compile_features(
+    ${PROJECT_NAME}
+    PRIVATE
+        c_std_11
+)
 
-target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} ${LINK_LIBS})
+set_default_warnings(${PROJECT_NAME})
+
+target_include_directories(
+    ${PROJECT_NAME}
+    PRIVATE
+        ${PROJECT_SOURCE_DIR}/include
+)
+
+target_link_libraries(
+    ${PROJECT_NAME}
+    PRIVATE
+        SDL2::SDL2
+)
