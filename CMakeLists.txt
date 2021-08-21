@@ -13,12 +13,17 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 find_package(SDL2 REQUIRED)
 
-set(INCLUDE_DIRS ${SDL2_INCLUDE_DIRS} ${PROJECT_SOURCE_DIR}/include)
 set(LINK_LIBS ${SDL2_LIBRARIES})
 
-file(GLOB SOURCES
-	"src/*.c"
-	"src/core/*.c"
+set(INCLUDE_DIRS ${SDL2_INCLUDE_DIRS} include)
+set(SOURCES
+	"src/utils.c"
+	"src/main.c"
+
+	"src/core/callbacks.c"
+	"src/core/game.c"
+	"src/core/init.c"
+	"src/core/quit.c"
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
