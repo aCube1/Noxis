@@ -4,9 +4,9 @@ include_guard()
 # later.
 
 if (CMAKE_C_COMPILER_ID STREQUAL "Clang")
-    set(USING_CLANG TRUE)
+	set(USING_CLANG TRUE)
 elseif (CMAKE_C_COMPILER_ID STREQUAL "GNU")
-    set(USING_GCC TRUE)
+	set(USING_GCC TRUE)
 elseif (CMAKE_C_COMPILER_ID STREQUAL "MSVC")
-    set(USING_MSVC TRUE)
+	set(USING_MSVC TRUE)
 endif()

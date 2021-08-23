@@ -9,39 +9,40 @@ find_package(SDL2 REQUIRED)
 add_executable(${PROJECT_NAME})
 
 target_sources(
-    ${PROJECT_NAME}
-    PRIVATE
-        include/utils.h
-        src/utils.c
+	${PROJECT_NAME}
+	PRIVATE
+	include/utils.h
+	src/utils.c
 
-        include/core/callbacks.h
-        include/core/game.h
-        include/core/init.h
-        include/core/quit.h
-        src/core/callbacks.c
-        src/core/game.c
-        src/core/init.c
-        src/core/quit.c
+	include/core/callbacks.h
+	include/core/game.h
+	include/core/init.h
+	include/core/quit.h
+	src/core/callbacks.c
+	src/core/game.c
+	src/core/init.c
+	src/core/quit.c
 
-        src/main.c
+	src/main.c
 )
 
 target_compile_features(
-    ${PROJECT_NAME}
-    PRIVATE
-        c_std_11
+	${PROJECT_NAME}
+	PRIVATE
+		c_std_11
 )
 
 set_default_warnings(${PROJECT_NAME})
 
 target_include_directories(
-    ${PROJECT_NAME}
-    PRIVATE
-        ${PROJECT_SOURCE_DIR}/include
+	${PROJECT_NAME}
+	PRIVATE
+		${PROJECT_SOURCE_DIR}/include
+		${PROJECT_SOURCE_DIR}/ext
 )
 
 target_link_libraries(
-    ${PROJECT_NAME}
-    PRIVATE
-        SDL2::SDL2
+	${PROJECT_NAME}
+	PRIVATE
+		SDL2::SDL2
 )

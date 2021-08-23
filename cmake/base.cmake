@@ -10,18 +10,18 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 # Ensure a CMAKE_BUILD_TYPE is set.
 if(NOT CMAKE_BUILD_TYPE)
-    message (STATUS "No build type specified. Defaulting to Debug.")
-    set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type." FORCE)
+	message (STATUS "No build type specified. Defaulting to Debug.")
+	set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type." FORCE)
 endif()
 
 # Create a list of valid CMAKE_BUILD_TYPES for cmake-gui and ccmake.
 set_property(
-    CACHE
-        CMAKE_BUILD_TYPE
-    PROPERTY
-        STRINGS
-            "Debug"
-            "Release"
-            "MinSizeRel"
-            "RelWithDebInfo"
+	CACHE
+	CMAKE_BUILD_TYPE
+	PROPERTY
+	STRINGS
+		"Debug"
+		"Release"
+		"MinSizeRel"
+		"RelWithDebInfo"
 )
