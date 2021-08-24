@@ -17,11 +17,11 @@ endif()
 # Create a list of valid CMAKE_BUILD_TYPES for cmake-gui and ccmake.
 set_property(
 	CACHE
-	CMAKE_BUILD_TYPE
+		CMAKE_BUILD_TYPE
 	PROPERTY
-	STRINGS
-		"Debug"
-		"Release"
-		"MinSizeRel"
-		"RelWithDebInfo"
+		STRINGS
+			"Debug"
+			"Release"
+			"MinSizeRel"
+			"RelWithDebInfo"
 )
