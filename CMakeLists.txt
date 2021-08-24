@@ -14,7 +14,12 @@ target_sources(
 	src/noxis/log.c
 	src/noxis/core.c
 
+	include/graphics/sprite.h
+	src/graphics/sprite.c
+
 	src/main.c
+
+	ext/stb_image.h
 )
 
 target_compile_features(
@@ -36,4 +41,5 @@ target_link_libraries(
 	${PROJECT_NAME}
 	PRIVATE
 		SDL2::SDL2
+		m # Remove GLIBC Error
 )
