@@ -1,12 +1,24 @@
-#include "utils.h"
-#include "core/game.h"
-
-extern bool NOX_fatal_error;
+#include "noxis.h"
 
 int main(int argc, char *argv[])
 {
-	NOX_StartGame(argc, argv);
-	NOX_LoopGame();
-
-	return NOX_HasFatalError() ? EXIT_FAILURE : EXIT_SUCCESS;
+	(void) argc; (void) argv;
+	
+	NOX_Setup_t setup = {
+		.title = "Noxis",
+		.window = {
+			.x = 0,
+			.y = 0,
+			.w = 800,
+			.h = 600
+		},
+		
+		.callbacks = {
+			.handleEvents = NULL,
+			.update = NULL,
+			.render = NULL,
+		}
+	};
+	
+	return NOX_Run(setup);
 }

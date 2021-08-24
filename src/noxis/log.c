@@ -1,6 +1,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include "noxis/log.h"
+#include "noxis/core.h"
 
 #define NOX_MAX_STRING_BYTES 512
 
@@ -9,7 +10,7 @@
 #define NOX_PREFIX_WARN      "\033[1;33m[ WARN ]\033[0m"
 #define NOX_PREFIX_ERROR     "\033[1;31m[ ERROR ]\033[0m"
 #define NOX_PREFIX_FATAL     "\033[0;91m[ FATAL ]\033[0m"
-#define NOX_PREFIX_INVALID   "\033[1;91mInvalid log prefix\033[0m\n"
+#define NOX_PREFIX_INVALID   "\033[1;91mInvalid log priority\033[0m\n"
 
 void NOX_Log(Uint8 priority, const char *format, ...)
 {
@@ -35,18 +36,20 @@ void NOX_Log(Uint8 priority, const char *format, ...)
 		break;
 	case NOX_LOG_FATAL:
 		prefix = NOX_PREFIX_FATAL;
-		// TODO: NOX_ForceShutdow();
+		// TODO: NOX_ForceShutdown();
 		break;
 	default:
 		prefix = NULL;
 	}
 	
-	if (prefix == NULL)
-		fprintf(stderr, NOX_PREFIX_INVALID);
-	else if (priority & NOX_LOG_ERROR)
+	if (priority & NOX_LOG_ERROR)
 		fprintf(stderr, "%s:\n\t%s\n", prefix, message);
+#ifdef NOX_DEBUG
+	else if (prefix == NULL)
+		fprintf(stderr, NOX_PREFIX_INVALID);
 	else
 		fprintf(stdout, "%s:\n\t%s\n", prefix, message);
-	
+#endif /* NOX_DEBUG */
+
 	va_end(args);
 }

@@ -11,17 +11,8 @@ add_executable(${PROJECT_NAME})
 target_sources(
 	${PROJECT_NAME}
 	PRIVATE
-	include/utils.h
-	src/utils.c
-
-	include/core/callbacks.h
-	include/core/game.h
-	include/core/init.h
-	include/core/quit.h
-	src/core/callbacks.c
-	src/core/game.c
-	src/core/init.c
-	src/core/quit.c
+	src/noxis/log.c
+	src/noxis/core.c
 
 	src/main.c
 )
