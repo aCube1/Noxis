@@ -11,24 +11,11 @@ add_executable(${PROJECT_NAME})
 target_sources(
 	${PROJECT_NAME}
 	PRIVATE
-	include/utils.h
-	src/utils.c
-
-	include/core/callbacks.h
-	include/core/game.h
-	include/core/init.h
-	include/core/quit.h
-	src/core/callbacks.c
-	src/core/game.c
-	src/core/init.c
-	src/core/quit.c
-
-	include/graphics/sprite.h
-	src/graphics/sprite.c
+	src/noxis/log.c
+	src/noxis/core.c
+	src/noxis/sprite.c
 
 	src/main.c
-
-	ext/stb_image.h
 )
 
 target_compile_features(
