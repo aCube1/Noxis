@@ -11,37 +11,37 @@ static struct Nox {
 	bool running;
 } nox;
 
-static bool initialize(NOX_Setup_t setup);
-static void eventHandler(NOX_Setup_t setup);
-static void updateFPS(void);
-static void shutdown(void);
+static bool Initialize(NOX_Setup_t setup);
+static void EventsHandler(NOX_Setup_t setup);
+static void UpdateFPS(void);
+static void Shutdown(void);
 
 bool NOX_Run(NOX_Setup_t setup)
 {
-	if (!initialize(setup)) {
-		shutdown();
+	if (!Initialize(setup)) {
+		Shutdown();
 		return false;
 	}
 	
 	while (nox.running) {
-		eventsHandler();
+		EventsHandler(setup);
 		
-		if (setup.callbacks.update != NULL)
-			setup.callbacks.update();
+		if (setup.callbacks.Update != NULL)
+			setup.callbacks.Update();
 		
 		SDL_RenderClear(nox.renderer);
-		if (setup.callbacks.render != NULL)
-			setup.callbacks.render(nox.renderer);
+		if (setup.callbacks.Render != NULL)
+			setup.callbacks.Render(nox.renderer);
 		SDL_RenderPresent(nox.renderer);
 		
-		updateFPS();
+		UpdateFPS();
 	}
 
-	shutdown();
+	Shutdown();
 	return true;
 }
 
-static bool initialize(NOX_Setup_t setup)
+static bool Initialize(NOX_Setup_t setup)
 {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) != 0) {
 		NOX_Log(NOX_LOG_ERROR, "Can't initialize SDL2: %s", SDL_GetError());
@@ -73,7 +73,7 @@ static bool initialize(NOX_Setup_t setup)
 	return true;
 }
 
-static void eventHandler(NOX_Setup_t setup)
+static void EventsHandler(NOX_Setup_t setup)
 {
 	SDL_Event event;
 	
@@ -83,13 +83,13 @@ static void eventHandler(NOX_Setup_t setup)
 			nox.running = false;
 			break;
 		default:
-			if (setup.callbacks.handleEvents != NULL)
-				setup.callbacks.handleEvents(event);
+			if (setup.callbacks.HandleEvents != NULL)
+				setup.callbacks.HandleEvents(event);
 		}
 	}
 }
 
-static void updateFPS(void)
+static void UpdateFPS(void)
 {
 	static Uint32 last_frame = 0;
 	static Uint32 fps_count = 0;
@@ -105,7 +105,7 @@ static void updateFPS(void)
 	last_frame = SDL_GetTicks();
 }
 
-static void shutdown(void)
+static void Shutdown(void)
 {
 	nox.running = false;
 	

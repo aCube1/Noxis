@@ -14,9 +14,9 @@ int main(int argc, char *argv[])
 		},
 		
 		.callbacks = {
-			.handleEvents = NULL,
-			.update = NULL,
-			.render = NULL,
+			.HandleEvents = NULL,
+			.Update = NULL,
+			.Render = NULL,
 		}
 	};
 	

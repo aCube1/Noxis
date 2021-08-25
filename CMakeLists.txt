@@ -13,13 +13,9 @@ target_sources(
 	PRIVATE
 	src/noxis/log.c
 	src/noxis/core.c
-
-	include/graphics/sprite.h
-	src/graphics/sprite.c
+	src/noxis/sprite.c
 
 	src/main.c
-
-	ext/stb_image.h
 )
 
 target_compile_features(

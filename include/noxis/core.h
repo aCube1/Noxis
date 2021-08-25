@@ -9,9 +9,9 @@ typedef struct NOX_Setup {
 	SDL_Rect window;
 	
 	struct {
-		void (*handleEvents)(SDL_Event *);
-		void (*update)(void);
-		void (*render)(SDL_Renderer *);
+		void (*HandleEvents)(SDL_Event);
+		void (*Update)(void);
+		void (*Render)(SDL_Renderer *);
 	} callbacks;
 } NOX_Setup_t;
 
