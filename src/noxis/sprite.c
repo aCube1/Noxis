@@ -28,7 +28,7 @@ NOX_Sprite_t *NOX_CreateSprite(SDL_Renderer *renderer, const char *file, SDL_Poi
 	};
 	sprite->scale = (SDL_FPoint) {1.0f, 1.0f};
 	sprite->can_draw = true;
-	
+
 	NOX_Log(NOX_LOG_INFO, "Sprite Object Created");
 	return sprite;
 }
@@ -104,7 +104,7 @@ void NOX_RenderSprite(SDL_Renderer *renderer, NOX_Sprite_t *sprite, SDL_FPoint p
 		sprite->can_draw = false;
 		return;
 	}
-	
+
 	SDL_FRect rect = {
 		position.x, position.y,
 		size.x * sprite->scale.x, size.y * sprite->scale.y,

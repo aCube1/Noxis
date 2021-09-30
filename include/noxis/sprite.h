@@ -5,15 +5,15 @@
 #include "noxis/log.h"
 
 #if SDL_BYTEORDER == SDL_BYTE_ENDIAN
-#	define NOX_RMASK 0xFF000000
-#	define NOX_GMASK 0x00FF0000
-#	define NOX_BMASK 0x0000FF00
-#	define NOX_AMASK 0x000000FF
+#	define NOX_RMASK 0xff000000
+#	define NOX_GMASK 0x00ff0000
+#	define NOX_BMASK 0x0000ff00
+#	define NOX_AMASK 0x000000ff
 #else
-#	define NOX_RMASK 0x000000FF
-#	define NOX_GMASK 0x0000FF00
-#	define NOX_BMASK 0x00FF0000
-#	define NOX_AMASK 0xFF000000
+#	define NOX_RMASK 0x000000ff
+#	define NOX_GMASK 0x0000ff00
+#	define NOX_BMASK 0x00ff0000
+#	define NOX_AMASK 0xff000000
 #endif
 
 typedef struct {
@@ -34,6 +34,18 @@ typedef struct {
 	SDL_FPoint scale, center;
 	double angle;
 } NOX_Sprite_t;
+
+/* NOX_CreateSprite
+ *
+ */
+
+/* NOX_LoadSprite
+ *
+ */
+
+/* NOX_DestroySprite
+ *
+ */
 
 NOX_Sprite_t *NOX_CreateSprite(SDL_Renderer *renderer, const char *file, SDL_Point frame_rect);
 int NOX_LoadSprite(SDL_Renderer *renderer, NOX_Sprite_t **sprite, const char *file);

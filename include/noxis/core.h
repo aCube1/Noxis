@@ -7,7 +7,7 @@
 typedef struct NOX_Setup {
 	const char *title;
 	SDL_Rect window;
-	
+
 	struct {
 		void (*HandleEvents)(SDL_Event);
 		void (*Update)(void);

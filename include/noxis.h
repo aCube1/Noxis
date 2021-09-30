@@ -3,5 +3,6 @@
 
 #include "noxis/core.h"
 #include "noxis/log.h"
+#include "noxis/configs.h"
 
 #endif /* _NOX_H_ */

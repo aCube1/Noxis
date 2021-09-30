@@ -1,6 +1,7 @@
+#include "noxis/log.h"
+
 #include <stdarg.h>
 #include <stdio.h>
-#include "noxis/log.h"
 #include "noxis/core.h"
 
 #define NOX_MAX_STRING_BYTES 512
@@ -17,10 +18,10 @@ void NOX_Log(Uint8 priority, const char *format, ...)
 	va_list args;
 	char message[NOX_MAX_STRING_BYTES];
 	char *prefix;
-	
+
 	va_start(args, format);
 	vsprintf(message, format, args);
-	
+
 	switch (priority) {
 	case NOX_LOG_INFO:
 		prefix = NOX_PREFIX_INFO;
@@ -41,7 +42,7 @@ void NOX_Log(Uint8 priority, const char *format, ...)
 	default:
 		prefix = NULL;
 	}
-	
+
 	if (priority & NOX_LOG_ERROR)
 		fprintf(stderr, "%s:\n\t%s\n", prefix, message);
 #ifdef NOX_DEBUG
