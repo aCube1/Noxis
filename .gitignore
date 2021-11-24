@@ -1,1 +1,4 @@
 /build
+.ccls
+*.json
+.cache/

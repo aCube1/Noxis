@@ -1,23 +1,30 @@
-#include "noxis/configs.h"
+#include "noxis/config.h"
 
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
+#include <SDL2/SDL_video.h>
 #include "mjson/mjson.h"
 #include "noxis/log.h"
 
 #define MAX_BUFFER_SIZE 512
 
-#define DEFAULT_CONFIG "{\n"					\
-		"\t\"assets_path\":\"/assets/\",\n" 	\
-		"\t\"window_size\":[800, 600]\n" 		\
-	"}\0"
+#define DEFAULT_CONFIG "{\n"			\
+	"\t\"assets_path\": \"/assets/\",\n"	\
+	"\t\"window\": {\n"			\
+	"\t\t\"title\": \"Noxis\",\n"		\
+	"\t\t\"fullscreen\": false,\n"		\
+	"\t\t\"size\": [800, 600]\n"		\
+	"\t}\n"					\
+"}\0"
 
-Uint8 NOX_LoadConfig(const char *filepath, NOX_Config_t *config)
+bool NOX_LoadConfig(const char *filepath, NOX_Config_t *config)
 {
 	NOX_File_t file;
 	double window_width, window_height;
+	int window_fullscreen;
 	FILE *config_file = fopen(filepath, "rb");
+
 	if (config_file == NULL || NOX_ReadFile(config_file, &file) != 0) {
 		NOX_Log(NOX_LOG_WARN, "Cannot open file: %s", filepath);
 		NOX_Log(NOX_LOG_INFO, "Creating new config file and using default configs...");
@@ -25,7 +32,7 @@ Uint8 NOX_LoadConfig(const char *filepath, NOX_Config_t *config)
 		config_file = fopen(filepath, "wb+");
 		if (config_file == NULL) {
 			NOX_Log(NOX_LOG_ERROR, "Cannot create new config file.");
-			return 1;
+			return false;
 		} else {
 			fputs(DEFAULT_CONFIG, config_file);
 			fflush(config_file);
@@ -33,41 +40,52 @@ Uint8 NOX_LoadConfig(const char *filepath, NOX_Config_t *config)
 			freopen(NULL, "rb", config_file);
 			if (NOX_ReadFile(config_file, &file) != 0) {
 				NOX_Log(NOX_LOG_ERROR, "Cannot use default configs.");
-				return 1;
+				return false;
 			}
 		}
 	}
 
+	/* Get Configs Variables */
 	config->assets_path = calloc(MAX_BUFFER_SIZE, sizeof(char));
-	mjson_get_string(file.content, file.len, "$.assets_path", config->assets_path, MAX_BUFFER_SIZE);
-	mjson_get_number(file.content, file.len, "$.window_size[0]", &window_width);
-	mjson_get_number(file.content, file.len, "$.window_size[1]", &window_height);
+	config->title = calloc(MAX_BUFFER_SIZE, sizeof(char));
 
-	config->window_size = (SDL_Point) {(int) window_width, (int) window_height};
+	mjson_get_string(file.content, file.len, "$.assets_path", config->assets_path, MAX_BUFFER_SIZE);
+	mjson_get_string(file.content, file.len, "$.window.title", config->title, MAX_BUFFER_SIZE);
+	mjson_get_bool(file.content, file.len, "$.window.fullscreen", &window_fullscreen);
+	mjson_get_number(file.content, file.len, "$.window.size[0]", &window_width);
+	mjson_get_number(file.content, file.len, "$.window.size[1]", &window_height);
+
+	if (window_fullscreen)
+		config->window_flags |= SDL_WINDOW_FULLSCREEN;
+
+	config->window_size = (SDL_Point) {
+		window_width != 0 ? (int)window_width : 800,
+		window_height != 0 ? (int)window_height : 600,
+	};
 
 	free(file.content);
 	fclose(config_file);
-	return 0;
+	return true;
 }
 
-Uint8 NOX_LoadFile(const char *filepath, NOX_File_t *file)
+bool NOX_LoadFile(const char *filepath, NOX_File_t *file)
 {
 	FILE *pfile = fopen(filepath, "rb");
 	if (pfile == NULL) {
 		NOX_Log(NOX_LOG_ERROR, "Cannot open file: %s", filepath);
-		return 1;
+		return false;
 	}
 
-	Uint8 success = NOX_ReadFile(pfile, file);
+	bool success = NOX_ReadFile(pfile, file);
 	fclose(pfile);
 	return success;
 }
 
-Uint8 NOX_ReadFile(FILE *pfile, NOX_File_t *file)
+bool NOX_ReadFile(FILE *pfile, NOX_File_t *file)
 {
 	if (pfile == NULL) {
 		NOX_Log(NOX_LOG_ERROR, "File couldn't be NULL.");
-		return 1;
+		return false;
 	}
 
 	Uint32 max_size = MAX_BUFFER_SIZE; /* Max size of current buffer */
@@ -98,17 +116,18 @@ Uint8 NOX_ReadFile(FILE *pfile, NOX_File_t *file)
 
 	file->content = buffer;
 	file->len = max_size;
-	return 0;
+	return true;
 
 ERROR: /* NOTE: I know, maybe I don't need use goto */
 	free(buffer);
 	NOX_Log(NOX_LOG_ERROR, "Cannot load content of file.");
-	return 1;
+	return false;
 }
 
 void NOX_DestroyConfig(NOX_Config_t *config)
 {
-	if (config->assets_path != NULL) {
+	if (config->assets_path != NULL)
 		free(config->assets_path);
-	}
+	if (config->title != NULL)
+		free(config->title);
 }

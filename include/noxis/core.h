@@ -1,28 +1,20 @@
-#ifndef _NOX_CORE_H_
-#define _NOX_CORE_H_
+#ifndef _NOXIS_CORE_H_
+#define _NOXIS_CORE_H_
 
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 
-typedef struct NOX_Setup {
-	const char *title;
-	SDL_Rect window;
-
-	struct {
-		void (*HandleEvents)(SDL_Event);
-		void (*Update)(void);
-		void (*Render)(SDL_Renderer *);
-	} callbacks;
-} NOX_Setup_t;
-
 /* NOX_Run
  *
  */
-bool NOX_Run(NOX_Setup_t setup);
+bool NOX_Run(const char *conf_filepath);
 
 /* NOX_ForceShutdown
  *
  */
 void NOX_ForceShutdown(void);
 
-#endif /* _NOX_CORE_H_ */
+/* Getters */
+Uint16 NOX_GetFPS(void);
+
+#endif /* _NOXIS_CORE_H_ */

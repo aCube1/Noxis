@@ -12,15 +12,27 @@ add_executable(${PROJECT_NAME})
 target_sources(
 	${PROJECT_NAME}
 	PRIVATE
+	# Headers
+	include/noxis.h
+	include/noxis/log.h
+	include/noxis/core.h
+	#include/noxis/sprite.h
+	include/noxis/config.h
+
+	# Sources
+	src/noxis.c
 	src/noxis/log.c
 	src/noxis/core.c
-	src/noxis/sprite.c
-	src/noxis/configs.c
+	#src/noxis/sprite.c
+	src/noxis/config.c
 
-	src/main.c
-
-	# External sources
+	# External libraries
+	# Headers
+	ext/mjson/mjson.h
+	ext/flecs/flecs.h
+	# Sources
 	ext/mjson/mjson.c
+	ext/flecs/flecs.c
 )
 
 target_compile_features(

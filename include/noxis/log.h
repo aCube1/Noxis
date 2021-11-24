@@ -1,7 +1,7 @@
 #ifndef _NOX_LOG_H_
 #define _NOX_LOG_H_
 
-#include <SDL2/SDL.h>
+#include <SDL2/SDL_stdinc.h>
 
 /* Log Priorities */
 #define NOX_LOG_INFO  0x01
