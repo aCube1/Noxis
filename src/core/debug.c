@@ -2,15 +2,16 @@
 
 #include <stdio.h>
 #include <stdarg.h>
+#include "core/setup.h"
 
 #define MAX_LOG_MESSAGE 1024
 
-#define NOX_PREFIX_INFO    "\003[1;36m[ INFO ]\003[0m"
-#define NOX_PREFIX_WARN    "\003[1;33m[ WARN ]\003[0m"
-#define NOX_PREFIX_DEBUG   "\003[1;32m[ DEBUG ]\003[0m"
-#define NOX_PREFIX_ERROR   "\003[1;31m[ ERROR ]\003[0m"
-#define NOX_PREFIX_FATAL   "\003[0;91m[ FATAL ]\003[0m"
-#define NOX_PREFIX_INVALID "\003[1;91m[ INVALID LOG FLAG ]\003[0m\n"
+#define NOX_PREFIX_INFO    "\033[1;36m[ INFO ]\033[0m"
+#define NOX_PREFIX_WARN    "\033[1;33m[ WARN ]\033[0m"
+#define NOX_PREFIX_DEBUG   "\033[1;32m[ DEBUG ]\033[0m"
+#define NOX_PREFIX_ERROR   "\033[1;31m[ ERROR ]\033[0m"
+#define NOX_PREFIX_FATAL   "\033[0;91m[ FATAL ]\033[0m"
+#define NOX_PREFIX_INVALID "\033[1;91m[ INVALID LOG FLAG ]\033[0m\n"
 
 void NOX_Log(Uint8 log_flag, const char *format, ...)
 {
@@ -36,16 +37,15 @@ void NOX_Log(Uint8 log_flag, const char *format, ...)
 		break;
 	}
 
-	if (log_flag & NOX_LOG_ERROR || log_flag & NOX_LOG_FATAL) {
+	if (log_flag & NOX_LOG_ERROR) {
 		fprintf(stderr, "%s:\n\t%s\n", prefix, message);
-		/*if (log_flag & RAX_LOG_FATAL )
-		 *	NOX_ForceShutdown();
-		 */
+		if (log_flag & NOX_LOG_FATAL)
+			NOX_ForceShutdown();
 	}
-#ifdef RAX_DEBUG
+#ifdef NOX_DEBUG
 	else if (prefix == NULL)
 		fprintf(stderr, NOX_PREFIX_INVALID);
 	else
 		fprintf(stdout, "%s:\n\t%s\n", prefix, message);
-#endif /* RAX_DEBUG */
+#endif /* NOX_DEBUG */
 }

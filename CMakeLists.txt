@@ -14,10 +14,19 @@ target_sources(
 		# Sources
 		src/noxis.c
 		src/core/debug.c
+		src/core/setup.c
 
 		# Headers
 		include/noxis.h
 		include/core/debug.h
+		include/core/setup.h
+
+		# External Libraries
+		# Sources
+		ext/flecs/flecs.c
+
+		# Headers
+		ext/flecs/flecs.h
 )
 
 target_compile_features(
