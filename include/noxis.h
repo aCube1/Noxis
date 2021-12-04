@@ -1,8 +1,7 @@
-#ifndef _NOX_H_
-#define _NOX_H_
+#ifndef _NOXIS_H_
+#define _NOXIS_H_
 
-#include "noxis/core.h"
-#include "noxis/log.h"
-#include "noxis/configs.h"
+#include "core/debug.h"
+#include "core/setup.h"
 
-#endif /* _NOX_H_ */
+#endif /* _NOXIS_H_ */

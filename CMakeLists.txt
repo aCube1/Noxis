@@ -1,26 +1,34 @@
 cmake_minimum_required(VERSION 3.16)
 project(Noxis C)
 
+find_package(SDL2 REQUIRED)
+
 include(cmake/base.cmake)
 include(cmake/warnings.cmake)
-
-find_package(SDL2 REQUIRED)
-find_package(LuaJIT REQUIRED)
 
 add_executable(${PROJECT_NAME})
 
 target_sources(
 	${PROJECT_NAME}
 	PRIVATE
-	src/noxis/log.c
-	src/noxis/core.c
-	src/noxis/sprite.c
-	src/noxis/configs.c
+		# Sources
+		src/noxis.c
+		src/core/debug.c
+		src/core/setup.c
+		src/core/ecs/setup.c
 
-	src/main.c
+		# Headers
+		include/noxis.h
+		include/core/debug.h
+		include/core/setup.h
+		include/core/ecs/setup.h
 
-	# External sources
-	ext/mjson/mjson.c
+		# External Libraries
+		# Sources
+		ext/flecs/flecs.c
+
+		# Headers
+		ext/flecs/flecs.h
 )
 
 target_compile_features(
@@ -36,13 +44,11 @@ target_include_directories(
 	PRIVATE
 		${PROJECT_SOURCE_DIR}/include
 		${PROJECT_SOURCE_DIR}/ext
-		${LUAJIT_INCLUDE_DIR}
 )
 
 target_link_libraries(
 	${PROJECT_NAME}
 	PRIVATE
 		SDL2::SDL2
-		${LUAJIT_LIBRARIES}
-		m # Remove GLIBC Error
+		m
 )
