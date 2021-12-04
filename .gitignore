@@ -1,5 +1,2 @@
 build/
 .cache/
-
-.ccls
-*.sh

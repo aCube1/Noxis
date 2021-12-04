@@ -1,8 +1,8 @@
 #include "core/setup.h"
 
 #include <SDL2/SDL.h>
-#include "flecs/flecs.h"
 #include "core/debug.h"
+#include "core/ecs/setup.h"
 
 static bool Initiliaze(void);
 static void UpdateFPS(void);
@@ -11,7 +11,7 @@ static void Shutdown(void);
 static struct Nox {
 	SDL_Window *window;
 	SDL_Renderer *render;
-	ecs_world_t *ecs_world;
+	ecs_world_t **ecs_world;
 
 	Uint16 fps;
 	double dt; /* delta_time */
@@ -26,9 +26,7 @@ bool NOX_Run(void)
 
 	while (nox.running) {
 		SDL_RenderClear(nox.render);
-		/* TODO: ECS World Don't Initiliaze For While
-		 * ecs_progress(nox.world, nox.dt);
-		 */
+		ecs_progress(*nox.ecs_world, nox.dt);
 		SDL_RenderPresent(nox.render);
 
 		UpdateFPS();
@@ -72,14 +70,12 @@ static bool Initiliaze(void)
 	}
 	NOX_Log(NOX_LOG_INFO, "Window Render Created!");
 
-	/* TODO: ECS initialization will be made in another file. */
-	/* nox.ecs_world = NOX_SetupECS();
-	 * if (nox.ecs_world == NULL) {
-	 *	NOX_Log(NOX_LOG_ERROR | NOX_LOG_FATAL, "Can't Create ECS World Manager.");
-	 *	return false;
-	 * }
-	 * NOX_Log(NOX_LOG_INFO, "ECS World Manager Created!");
-	 */
+	 nox.ecs_world = NOX_SetupECS();
+	 if (nox.ecs_world == NULL) {
+		NOX_Log(NOX_LOG_ERROR | NOX_LOG_FATAL, "Can't Create ECS World Manager.");
+		return false;
+	 }
+	 NOX_Log(NOX_LOG_INFO, "ECS World Manager Created!");
 
 	return nox.running = true;
 }
@@ -103,12 +99,10 @@ static void Shutdown(void)
 {
 	nox.running = false;
 
-	/* TODO: ECS uninitialization will be made in another file. */
-	/* if (nox.ecs_world != NULL) {
-	 *	NOX_DestroyECS(nox.ecs_world);
-	 *	NOX_Log(NOX_LOG_INFO, "ECS World Destroyed!");
-	 * }
-	 */
+	if (nox.ecs_world != NULL) {
+		ecs_fini(*nox.ecs_world);
+		NOX_Log(NOX_LOG_INFO, "ECS World Destroyed!");
+	}
 
 	if (nox.render != NULL) {
 		SDL_DestroyRenderer(nox.render);

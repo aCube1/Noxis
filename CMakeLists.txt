@@ -15,11 +15,13 @@ target_sources(
 		src/noxis.c
 		src/core/debug.c
 		src/core/setup.c
+		src/core/ecs/setup.c
 
 		# Headers
 		include/noxis.h
 		include/core/debug.h
 		include/core/setup.h
+		include/core/ecs/setup.h
 
 		# External Libraries
 		# Sources
@@ -48,5 +50,5 @@ target_link_libraries(
 	${PROJECT_NAME}
 	PRIVATE
 		SDL2::SDL2
-		m # Remove GLIBC error
+		m
 )
