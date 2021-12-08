@@ -8,6 +8,17 @@ include(cmake/warnings.cmake)
 
 add_executable(${PROJECT_NAME})
 
+set_source_files_properties(
+# External
+	# Sources
+	ext/flecs/flecs.c
+	# Headers
+	ext/stb/stb_image.h
+	ext/flecs/flecs.h
+	PROPERTIES
+	COMPILE_OPTIONS ""
+)
+
 target_sources(
 	${PROJECT_NAME}
 	PRIVATE
@@ -15,20 +26,22 @@ target_sources(
 		src/noxis.c
 		src/core/debug.c
 		src/core/setup.c
-		src/core/ecs/setup.c
+		#src/core/ecs/setup.c
+		#src/core/ecs/sprite.c
 
 		# Headers
 		include/noxis.h
 		include/core/debug.h
 		include/core/setup.h
-		include/core/ecs/setup.h
+		#include/core/ecs/setup.h
+		#include/core/ecs/sprite.h
 
-		# External Libraries
+		# External
 		# Sources
 		ext/flecs/flecs.c
-
 		# Headers
 		ext/flecs/flecs.h
+		ext/stb/stb_image.h
 )
 
 target_compile_features(
