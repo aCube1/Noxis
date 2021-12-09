@@ -8,6 +8,7 @@ set(GCC_CLANG_BASE_WARNINGS
 	-Wall
 	-Wextra
 	-Wpedantic
+	-ferror-limit=0
 )
 
 set(MSVC_BASE_WARNINGS

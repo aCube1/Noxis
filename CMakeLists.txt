@@ -26,15 +26,13 @@ target_sources(
 		src/noxis.c
 		src/core/debug.c
 		src/core/setup.c
-		#src/core/ecs/setup.c
-		#src/core/ecs/sprite.c
+		src/core/scene/manager.c
 
 		# Headers
 		include/noxis.h
 		include/core/debug.h
 		include/core/setup.h
-		#include/core/ecs/setup.h
-		#include/core/ecs/sprite.h
+		include/core/scene/manager.h
 
 		# External
 		# Sources

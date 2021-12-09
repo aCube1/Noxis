@@ -2,7 +2,7 @@
 
 #include <SDL2/SDL.h>
 #include "core/debug.h"
-#include "core/ecs/setup.h"
+#include "core/scene/manager.h"
 
 static bool Initiliaze(void);
 static void UpdateFPS(void);
@@ -10,11 +10,10 @@ static void Shutdown(void);
 
 static struct Nox {
 	SDL_Window *window;
-	SDL_Renderer *render;
-	ecs_world_t **ecs_world;
+	SDL_Renderer *renderer;
 
 	Uint16 fps;
-	double dt; /* delta_time */
+	double dt; /* delta time */
 
 	bool running;
 } nox;
@@ -24,10 +23,29 @@ bool NOX_Run(void)
 	if (!Initiliaze())
 		return false;
 
+	NOX_NewScene("MAIN", &nox.renderer);
+
+	if (nox.renderer == NULL)
+		NOX_Log(NOX_LOG_DEBUG, "WTF!?");
+
 	while (nox.running) {
-		SDL_RenderClear(nox.render);
-		ecs_progress(*nox.ecs_world, nox.dt);
-		SDL_RenderPresent(nox.render);
+		/* NOTE: Placeholder */
+		SDL_Event event;
+		while (SDL_PollEvent(&event)) {
+			switch (event.type) {
+			case SDL_KEYDOWN:
+				if (event.key.keysym.sym == SDLK_ESCAPE) {
+
+				}
+			case SDL_QUIT:
+				nox.running = false;
+			}
+		}
+
+
+		SDL_RenderClear(nox.renderer);
+		/* TODO: Scene Update */
+		SDL_RenderPresent(nox.renderer);
 
 		UpdateFPS();
 	}
@@ -63,19 +81,12 @@ static bool Initiliaze(void)
 	}
 	NOX_Log(NOX_LOG_INFO, "Window Handler Created!");
 
-	nox.render = SDL_CreateRenderer(nox.window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	if (nox.render == NULL) {
+	nox.renderer = SDL_CreateRenderer(nox.window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	if (nox.renderer == NULL) {
 		NOX_Log(NOX_LOG_ERROR | NOX_LOG_FATAL, "Can't Create Window Render: %s", SDL_GetError());
 		return false;
 	}
 	NOX_Log(NOX_LOG_INFO, "Window Render Created!");
-
-	 nox.ecs_world = NOX_SetupECS();
-	 if (nox.ecs_world == NULL) {
-		NOX_Log(NOX_LOG_ERROR | NOX_LOG_FATAL, "Can't Create ECS World Manager.");
-		return false;
-	 }
-	 NOX_Log(NOX_LOG_INFO, "ECS World Manager Created!");
 
 	return nox.running = true;
 }
@@ -98,14 +109,10 @@ static void UpdateFPS(void)
 static void Shutdown(void)
 {
 	nox.running = false;
+	NOX_DestroySceneAll();
 
-	if (nox.ecs_world != NULL) {
-		ecs_fini(*nox.ecs_world);
-		NOX_Log(NOX_LOG_INFO, "ECS World Destroyed!");
-	}
-
-	if (nox.render != NULL) {
-		SDL_DestroyRenderer(nox.render);
+	if (nox.renderer != NULL) {
+		SDL_DestroyRenderer(nox.renderer);
 		NOX_Log(NOX_LOG_INFO, "Window Renderer Destroyed!");
 	}
 
